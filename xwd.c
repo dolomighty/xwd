@@ -248,7 +248,7 @@ Get24bitDirectColors(XColor **colors)
 
 /*
  * Window_Dump: dump a window to a file which must already be open for
- *              writting.
+ *              writing.
  */
 
 void
@@ -529,10 +529,24 @@ usage(const char *errmsg)
     if (errmsg != NULL)
         fprintf (stderr, "%s: %s\n", program_name, errmsg);
 
-    fprintf (stderr,
-"usage: %s [-display host:dpy] [-debug] [-help] %s [-nobdrs] [-out <file>]",
-	   program_name, "[{-root|-id <id>|-name <name>}]");
-    fprintf (stderr, " [-xy] [-add value] [-frame] [-version]\n");
+    fprintf(stderr, "Usage: %s [options] [-root| -id <wdid>| -name <wdname>] > mywddump\n", program_name);
+    fprintf(stderr, "       %s [options] [-root| -id <wdid>| -name <wdname>] -out mywddump\n", program_name);
+    fprintf(stderr, "Options:\n");
+    fprintf(stderr, "  -help                    Print this message\n");
+    fprintf(stderr, "  -version                 Print the program version and exit\n");
+    fprintf(stderr, "  -debug                   Enable debug mode\n");
+    fprintf(stderr, "  -d, -display <host:dpy>  Specify server to connect\n");
+    fprintf(stderr, "  -nobdrs                  Exclude window borders\n");
+    fprintf(stderr, "  -out <file>              Specify an output file\n");
+    fprintf(stderr, "  -xy                      Select XY dumping format for color displays\n");
+    fprintf(stderr, "  -add <value>             Add a signed value to every pixel\n");
+    fprintf(stderr, "  -frame                   Include window manager frame\n");
+    fprintf(stderr, "  -root                    Select the root window\n");
+    fprintf(stderr, "  -id <wdid>               Select a window by its resource id\n");
+    fprintf(stderr, "  -name <wdname>           Select a window by its WM_NAME property\n");
+    fprintf(stderr, "  -icmap                   Use the first colormap of the screen\n");
+    fprintf(stderr, "  -screen                  Send the request against the root window\n");
+    fprintf(stderr, "  -silent                  Don't ring any bells\n");
     exit(1);
 }
 
