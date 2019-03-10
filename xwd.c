@@ -531,22 +531,23 @@ usage(const char *errmsg)
 
     fprintf(stderr, "Usage: %s [options] [-root| -id <wdid>| -name <wdname>] > mywddump\n", program_name);
     fprintf(stderr, "       %s [options] [-root| -id <wdid>| -name <wdname>] -out mywddump\n", program_name);
-    fprintf(stderr, "Options:\n");
-    fprintf(stderr, "  -help                    Print this message\n");
-    fprintf(stderr, "  -version                 Print the program version and exit\n");
-    fprintf(stderr, "  -debug                   Enable debug mode\n");
-    fprintf(stderr, "  -d, -display <host:dpy>  Specify server to connect\n");
-    fprintf(stderr, "  -nobdrs                  Exclude window borders\n");
-    fprintf(stderr, "  -out <file>              Specify an output file\n");
-    fprintf(stderr, "  -xy                      Select XY dumping format for color displays\n");
-    fprintf(stderr, "  -add <value>             Add a signed value to every pixel\n");
-    fprintf(stderr, "  -frame                   Include window manager frame\n");
-    fprintf(stderr, "  -root                    Select the root window\n");
-    fprintf(stderr, "  -id <wdid>               Select a window by its resource id\n");
-    fprintf(stderr, "  -name <wdname>           Select a window by its WM_NAME property\n");
-    fprintf(stderr, "  -icmap                   Use the first colormap of the screen\n");
-    fprintf(stderr, "  -screen                  Send the request against the root window\n");
-    fprintf(stderr, "  -silent                  Don't ring any bells\n");
+    fputs("Options:\n"
+          "  -help                    Print this message\n"
+          "  -version                 Print the program version and exit\n"
+          "  -debug                   Enable debug mode\n"
+          "  -d, -display <host:dpy>  Specify server to connect\n"
+          "  -nobdrs                  Exclude window borders\n"
+          "  -out <file>              Specify an output file\n"
+          "  -xy                      Select XY dumping format for color displays\n"
+          "  -add <value>             Add a signed value to every pixel\n"
+          "  -frame                   Include window manager frame\n"
+          "  -root                    Select the root window\n"
+          "  -id <wdid>               Select a window by its resource id\n"
+          "  -name <wdname>           Select a window by its WM_NAME property\n"
+          "  -icmap                   Use the first colormap of the screen\n"
+          "  -screen                  Send the request against the root window\n"
+          "  -silent                  Don't ring any bells\n",
+        stderr);
     exit(1);
 }
 
