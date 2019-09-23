@@ -950,10 +950,6 @@ src_in_overlay(image_region_type *src, int numOverlayVisuals,
             *transparentType = pOverlayVisuals[i].transparentType;
             return 1;
         }
-
-        else {
-        }
-
     }
     return 0;
 }
