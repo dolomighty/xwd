@@ -241,6 +241,7 @@ Get24bitDirectColors(XColor **colors)
     for (i = 0; i < ncolors; i++) {
         tcol[i].pixel = i << 16 | i << 8 | i;
         tcol[i].red = tcol[i].green = tcol[i].blue = i << 8 | i;
+        tcol[i].flags = 0;
     }
 
     return ncolors;
@@ -336,8 +337,7 @@ Window_Dump(Window window, FILE *out)
     if (absy + height > dheight)
         height = dheight - absy;
 
-    XFetchName(dpy, window, &win_name);
-    if (!win_name || !win_name[0]) {
+    if (!XFetchName(dpy, window, &win_name) || !win_name || !win_name[0]) {
         win_name = default_win_name;
         got_win_name = False;
     }
@@ -430,6 +430,7 @@ Window_Dump(Window window, FILE *out)
      */
     if (debug)
         outl("xwd: Constructing and dumping file header.\n");
+    memset(&header, 0, SIZEOF(XWDheader));
     header.header_size = (CARD32) header_size;
     header.file_version = (CARD32) XWD_FILE_VERSION;
     header.pixmap_format = (CARD32) format;

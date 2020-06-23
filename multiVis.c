@@ -34,11 +34,12 @@ from The Open Group.
 
     ------------------------------------------------------------------------ **/
 
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/X.h>
-#include <stdio.h>
 #include "list.h"
 #include "wsutils.h"
 #include "multiVis.h"
@@ -354,7 +355,7 @@ ReadRegionsInList(Display *disp, Visual *fakeVis, int depth, int format,
 {
     image_region_type *reg;
     int dst_x, dst_y;           /* where in pixmap to write (UL) */
-    int diff;
+    int datalen, diff;
 
     XImage *reg_image, *ximage;
     int srcRect_x, srcRect_y, srcRect_width, srcRect_height;
@@ -364,10 +365,11 @@ ReadRegionsInList(Display *disp, Visual *fakeVis, int depth, int format,
                           8, 0);
     bytes_per_line = ximage->bytes_per_line;
 
-    if (format == ZPixmap)
-        ximage->data = malloc(height * bytes_per_line);
-    else
-        ximage->data = malloc(height * bytes_per_line * depth);
+    datalen = height * bytes_per_line;
+    if (format != ZPixmap)
+        datalen *= depth;
+    ximage->data = malloc(datalen);
+    memset(ximage->data, 0, datalen);
 
     ximage->bits_per_pixel = depth; /** Valid only if format is ZPixmap ***/
 
