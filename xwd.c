@@ -508,7 +508,7 @@ Window_Dump(Window window, FILE *out)
      *  This copying of the bit stream (data) to a file is to be replaced
      *  by an Xlib call which hasn't been written yet.  It is not clear
      *  what other functions of xwd will be taken over by this (as yet)
-     *  non-existant X function.
+     *  non-existent X function.
      */
     if (fwrite(image->data, (int) buffer_size, 1, out) != 1) {
         perror("xwd");

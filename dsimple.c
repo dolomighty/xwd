@@ -44,7 +44,7 @@ from The Open Group.
 #include "dsimple.h"
 
 /*
- * Just_display: A group of routines designed to make the writting of simple
+ * Just_display: A group of routines designed to make the writing of simple
  *               X11 applications which open a display but do not open
  *               any windows much faster and easier.  Unless a routine says
  *               otherwise, it may be assumed to require program_name, dpy,
@@ -61,7 +61,7 @@ int      screen = 0;
 
 
 /*
- * Get_Display_Name (argc, argv) Look for -display, -d, or host:dpy (obselete)
+ * Get_Display_Name (argc, argv) Look for -display, -d, or host:dpy (obsolete)
  * If found, remove it from command line.  Don't go past a lone -.
  */
 char *
@@ -150,7 +150,7 @@ Close_Display(void)
 
 
 /*
- * Select_Window_Args: a rountine to provide a common interface for
+ * Select_Window_Args: a routine to provide a common interface for
  *                     applications that need to allow the user to select one
  *                     window on the screen for special consideration.
  *                     This routine implements the following command line

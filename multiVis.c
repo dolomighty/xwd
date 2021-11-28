@@ -475,7 +475,7 @@ ReadAreaToImage(Display *disp,
 #endif
     }
 /* Now tranverse the overlay visual windows and test for transparency index.  */
-/* If you find one, subsitute the value from the matching image plane pixmap. */
+/* If you find one, substitute the value from the matching image plane pixmap. */
 
     for (reg = (image_region_type *) first_in_list(vis_regions); reg;
          reg = (image_region_type *) next_in_list(vis_regions)) {
@@ -996,7 +996,7 @@ static int weCreateServerOverlayVisualsProperty = False;
  * the array of the screen's visuals, determining whether the visual is an
  * overlay or image visual.
  *
- * If the routine sucessfully obtained the visual information, it returns zero.
+ * If the routine successfully obtained the visual information, it returns zero.
  * If the routine didn't obtain the visual information, it returns non-zero.
  *
  ******************************************************************************/
@@ -1043,7 +1043,7 @@ GetXVisualInfo(   /* Which X server (aka "display"). */
 
     *pVisuals = XGetVisualInfo(display, mask, &getVisInfo, numVisuals);
     if ((nVisuals = *numVisuals) <= 0) {
-        /* Return that the information wasn't sucessfully obtained: */
+        /* Return that the information wasn't successfully obtained: */
         return (1);
     }
     pVis = *pVisuals;
@@ -1109,7 +1109,7 @@ GetXVisualInfo(   /* Which X server (aka "display"). */
         pVis++;
     }
 
-    /* Return that the information was sucessfully obtained: */
+    /* Return that the information was successfully obtained: */
     return (0);
 
 }                               /* GetXVisualInfo() */

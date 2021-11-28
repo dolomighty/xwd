@@ -135,7 +135,7 @@ list_length(list_ptr lp)
 
 
 /** ------------------------------------------------------------------------
-	Scans thru list, looking for a node whose ptr.item is equal to
+	Scans through list, looking for a node whose ptr.item is equal to
 	the "item" passed in.  "Equal" here means the same address - no
 	attempt is made to match equivalent values stored in different
 	locations.  If a match is found, that node is deleted from the
