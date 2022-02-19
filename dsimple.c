@@ -33,6 +33,8 @@ from The Open Group.
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <assert.h>
+
 
 /*
  * Other_stuff.h: Definitions of routines in other_stuff.
@@ -54,10 +56,41 @@ from The Open Group.
  */
 
 
+#define STREQ(a,b)  (0==strcmp(a,b))
+
+
+
+
 /* This stuff is defined in the calling program by just_display.h */
 const char *program_name = "unknown_program";
 Display *dpy = NULL;
 int      screen = 0;
+
+
+Bool rect = False;
+int  rect_x = 100;
+int  rect_y = 100;
+int  rect_w = 200;
+int  rect_h = 500;
+
+
+static void parse_rect( char *xywh ){
+    // xywh = "100,200,300,400"
+//    fprintf(stderr,"xywh %s\n",xywh);
+    char *tok;
+    assert( tok = strtok(xywh,","));    rect_x = atoi(tok);
+    assert( tok = strtok(0,","));       rect_y = atoi(tok);
+    assert( tok = strtok(0,","));       rect_w = atoi(tok);
+    assert( tok = strtok(0,","));       rect_h = atoi(tok);
+//    fprintf(stderr,"rect_x %d rect_y %d rect_w %d rect_h %d\n"
+//        ,rect_x
+//        ,rect_y
+//        ,rect_w
+//        ,rect_h
+//    );
+}
+
+
 
 
 /*
@@ -76,7 +109,7 @@ Get_Display_Name(int *pargc,    /* MODIFIED */
     for (i = 1; i < argc; i++) {
         char *arg = argv[i];
 
-        if (!strcmp(arg, "-display") || !strcmp(arg, "-d")) {
+        if (STREQ(arg, "-display") || STREQ(arg, "-d")) {
             if (++i >= argc)
                 usage("-display requires an argument");
 
@@ -84,7 +117,7 @@ Get_Display_Name(int *pargc,    /* MODIFIED */
             *pargc -= 2;
             continue;
         }
-        if (!strcmp(arg, "-")) {
+        if (STREQ(arg, "-")) {
             while (i < argc)
                 *pargv++ = argv[i++];
             break;
@@ -149,6 +182,7 @@ Close_Display(void)
 }
 
 
+
 /*
  * Select_Window_Args: a routine to provide a common interface for
  *                     applications that need to allow the user to select one
@@ -189,24 +223,31 @@ Select_Window_Args(int *rargc, char **argv)
 #define COPYOPT nargv++[0]=OPTION, nargc++
 
     while (NXTOPTP) {
-        if (!strcmp(OPTION, "-")) {
+        if (STREQ(OPTION, "-")) {
             COPYOPT;
             while (NXTOPTP)
                 COPYOPT;
             break;
         }
-        if (!strcmp(OPTION, "-root")) {
+        if (STREQ(OPTION, "-root")) {
             w = RootWindow(dpy, screen);
             continue;
         }
-        if (!strcmp(OPTION, "-name")) {
+        if (STREQ(OPTION, "-rect")) {
+            rect = True;
+            w = RootWindow(dpy, screen);
+            NXTOPT("-rect");
+            parse_rect(OPTION);
+            continue;
+        }
+        if (STREQ(OPTION, "-name")) {
             NXTOPT("-name");
             w = Window_With_Name(dpy, RootWindow(dpy, screen), OPTION);
             if (!w)
                 Fatal_Error("No window with name %s exists!", OPTION);
             continue;
         }
-        if (!strcmp(OPTION, "-id")) {
+        if (STREQ(OPTION, "-id")) {
             NXTOPT("-id");
             w = 0;
             sscanf(OPTION, "0x%lx", &w);
@@ -301,7 +342,7 @@ Window_With_Name(Display *disp, Window top, const char *name)
     Window w = 0;
     char *window_name;
 
-    if (XFetchName(disp, top, &window_name) && !strcmp(window_name, name))
+    if (XFetchName(disp, top, &window_name) && STREQ(window_name, name))
         return (top);
 
     if (!XQueryTree(disp, top, &dummy, &dummy, &children, &nchildren))

@@ -89,6 +89,8 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/extensions/XKBbells.h>
 #endif
 
+
+
 /* Setable Options */
 
 static int format = ZPixmap;
@@ -101,6 +103,14 @@ static Bool use_installed = False;
 static long add_pixel_value = 0;
 
 
+extern Bool rect;
+extern int rect_x;
+extern int rect_y;
+extern int rect_w;
+extern int rect_h;
+
+
+
 extern int main(int, char **);
 extern void Window_Dump(Window, FILE *);
 extern int Image_Size(XImage *);
@@ -110,6 +120,9 @@ extern void _swaplong(register char *, register unsigned);
 static long parse_long(char *);
 static int Get24bitDirectColors(XColor **);
 static int ReadColors(Visual *, Colormap, XColor **);
+
+
+
 
 static long
 parse_long(char *s)
@@ -138,6 +151,9 @@ parse_long(char *s)
     return (thesign * retval);
 }
 
+
+#define STREQ(a,b) (0==strcmp(a,b))
+
 int
 main(int argc, char **argv)
 {
@@ -154,17 +170,18 @@ main(int argc, char **argv)
     target_win = Select_Window_Args(&argc, argv);
 
     for (i = 1; i < argc; i++) {
-        if (!strcmp(argv[i], "-nobdrs")) {
+        if (STREQ(argv[i], "-nobdrs")) {
             nobdrs = True;
             continue;
         }
-        if (!strcmp(argv[i], "-debug")) {
+        if (STREQ(argv[i], "-debug")) {
             debug = True;
             continue;
         }
-        if (!strcmp(argv[i], "-help"))
+        if (STREQ(argv[i], "-help"))
             usage(NULL);
-        if (!strcmp(argv[i], "-out")) {
+
+        if (STREQ(argv[i], "-out")) {
             if (++i >= argc)
                 usage("-out requires an argument");
             if (!(out_file = fopen(argv[i], "wb")))
@@ -172,33 +189,33 @@ main(int argc, char **argv)
             standard_out = False;
             continue;
         }
-        if (!strcmp(argv[i], "-xy")) {
+        if (STREQ(argv[i], "-xy")) {
             format = XYPixmap;
             continue;
         }
-        if (!strcmp(argv[i], "-screen")) {
+        if (STREQ(argv[i], "-screen")) {
             on_root = True;
             continue;
         }
-        if (!strcmp(argv[i], "-icmap")) {
+        if (STREQ(argv[i], "-icmap")) {
             use_installed = True;
             continue;
         }
-        if (!strcmp(argv[i], "-add")) {
+        if (STREQ(argv[i], "-add")) {
             if (++i >= argc)
                 usage("-add requires an argument");
             add_pixel_value = parse_long(argv[i]);
             continue;
         }
-        if (!strcmp(argv[i], "-frame")) {
+        if (STREQ(argv[i], "-frame")) {
             frame_only = True;
             continue;
         }
-        if (!strcmp(argv[i], "-silent")) {
+        if (STREQ(argv[i], "-silent")) {
             silent = True;
             continue;
         }
-        if (!strcmp(argv[i], "-version")) {
+        if (STREQ(argv[i], "-version")) {
             puts(PACKAGE_STRING);
             exit(0);
         }
@@ -352,8 +369,16 @@ Window_Dump(Window window, FILE *out)
      * Snarf the pixmap with XGetImage.
      */
 
+    if( rect ){
+        absx = rect_x;
+        absy = rect_y;
+        width  = rect_w;
+        height = rect_h;
+    }
+
     x = absx - win_info.x;
     y = absy - win_info.y;
+
 
     multiVis = GetMultiVisualRegions(dpy, RootWindow(dpy, screen),
                                      absx, absy,
@@ -567,7 +592,9 @@ usage(const char *errmsg)
           "  -name <wdname>           Select a window by its WM_NAME property\n"
           "  -icmap                   Use the first colormap of the screen\n"
           "  -screen                  Send the request against the root window\n"
-          "  -silent                  Don't ring any bells\n", stderr);
+          "  -silent                  Don't ring any bells\n"
+          "  -rect <x,y,w,h>          Only capture rect (implies -root)\n"
+          , stderr);
     exit(1);
 }
 
